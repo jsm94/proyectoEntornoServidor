@@ -15,6 +15,8 @@ public class Empleado {
     private String nombre;
     private String apellidos;
     private String departamento;
+    private String nick;
+    private String password;
     
     // <editor-fold defaultstate="collapsed" desc="getter & setter">
     
@@ -48,6 +50,22 @@ public class Empleado {
 
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public String getNick() {
+        return nick;
     }
     // </editor-fold>
     
