@@ -6,102 +6,40 @@ package entidades;
 
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import utiles.BD;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Juan Antonio Seco Merchán
  */
 public class Organizacion {
 
-    public static List<Empleado> getEmpleados() {
-        List<Empleado> empleados = new LinkedList();
-        Connection conn = BD.conectar(); // Realizamos la conexión con la base de datos
+    public List<Empleado> getEmpleados() {
+        List<Empleado> empleados = new ArrayList();
+        Connection conexion = null;
         try {
-            // Creamos la sentencia
-            Statement stm = conn.createStatement();
-            String sql = "SELECT empleados.id, empleados.nombre, apellidos, departamentos.nombre "
-                    + "FROM empleados JOIN departamentos ON departamento = departamentos.id;";
-            // Ejecutamos la consulta y recogemos el resultado
-            ResultSet rs = stm.executeQuery(sql);
-            // Vamos recorriendo los resultados
-            while (rs.next()) {
-                // Incluimos los datos recogidos para cada fila de empleado en un Empleado
+            conexion = utiles.BD.conectar();
+            Statement consultaEmpleados = conexion.createStatement();
+            ResultSet resultado = consultaEmpleados.executeQuery(
+                    "select * from empleados order by apellidos, nombre");
+            while (resultado.next()) {
                 Empleado empleado = new Empleado();
-                empleado.setId(rs.getInt(1));
-                empleado.setNombre(rs.getString(2));
-                empleado.setApellidos(rs.getString(3));
-                empleado.setDepartamento(rs.getString(4));
-                // Añadimos el empleado creado a la lista
+                empleado.setId(resultado.getInt("id"));
+                empleado.setNick(resultado.getString("nick"));
+                empleado.setNombre(resultado.getString("nombre"));
+                empleado.setApellidos(resultado.getString("apellidos"));
+                empleado.setDepartamento(resultado.getString("departamento"));
                 empleados.add(empleado);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Organizacion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            System.out.println("En Organizacion.getEmpleados(): " 
+                    + e.getMessage());
         } finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(Organizacion.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            utiles.BD.desconectar(conexion);
         }
+        
         return empleados;
     }
-
-    public static List<Mensaje> getMensajes() {
-        List<Mensaje> mensajes = new LinkedList();
-        Connection conn = BD.conectar(); // Realizamos la conexión con la base de datos
-        try {
-            // Creamos la sentencia
-            Statement stm = conn.createStatement();
-            String sql = "SELECT * FROM contacto";
-            // Ejecutamos la consulta y recogemos el resultado
-            ResultSet rs = stm.executeQuery(sql);
-            // Vamos recorriendo los resultados
-            while (rs.next()) {
-                // Incluimos los datos recogidos para cada fila de mensaje en un Mensaje
-                Mensaje mensaje = new Mensaje();
-                mensaje.setNombre(rs.getString(1));
-                mensaje.setPrimerApellido(rs.getString(2));
-                mensaje.setSegundoApellido(rs.getString(3));
-                mensaje.setOcupacion(rs.getString(4));
-                mensaje.setEmail(rs.getString(5));
-                mensaje.setEmpleado(rs.getInt(6));
-                mensaje.setMensaje(rs.getString(7));
-                mensaje.setFechaYHora(rs.getTimestamp(8));
-                mensaje.setIp(rs.getString(9));
-                // Añadimos el mensaje creado a la lista
-                mensajes.add(mensaje);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Organizacion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return mensajes;
-
-    }
-
-    public static Empleado getEmpleado(Integer id) {
-        Empleado empleado = new Empleado();
-        Connection conn = BD.conectar(); // Realizamos la conexión con la base de datos
-        // Creamos la sentencia
-        Statement stm;
-        try {
-            stm = conn.createStatement();
-            String sql = "SELECT * FROM empleados WHERE id=" + id + ";";
-            // Ejecutamos la consulta y recogemos el resultado
-            ResultSet rs = stm.executeQuery(sql);
-            rs.next();
-            empleado.setId(rs.getInt(1));
-            empleado.setNombre(rs.getString(2));
-            empleado.setApellidos(rs.getString(3));
-            empleado.setDepartamento(rs.getString(4));
-        } catch (SQLException ex) {
-            Logger.getLogger(Organizacion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return empleado;
-    }
-
+    
     public String getNombre() {
         return "2º DAW S.A.";
     }

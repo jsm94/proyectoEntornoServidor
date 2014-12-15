@@ -6,39 +6,34 @@
 package utiles;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Juan Antonio Seco Merchán
  */
 public class BD {
 
-    private static Connection conn;
-
-    public static Connection conectar() {
-        try {
-            //Cargamos el driver
-            Class.forName("com.mysql.jdbc.Driver");
-            //url base de datos
-            String url = "jdbc:mysql://localhost/cd_jsp";
-            //Creamos la conexión
-            conn = DriverManager.getConnection(url, "jsp", "jsp");
-            //Creamos la sentencia de insercción
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    /**
+     * Establece una conexión con la base de datos de la aplicación
+     * @return la conexión
+     * @throws SQLException
+     */
+    public static Connection conectar() throws SQLException {
+        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/mensajeria", "mensajeria", "mensajeria");
         return conn;
     }
-    
-    public static void desconectar(){
-        try {
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
+
+    /**
+     * Cierra la conexión con la base de datos
+     * @param conn la conexión a cerrar
+     */
+    public static void desconectar(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            }
+            catch (Exception e) {}
         }
     }
 }
