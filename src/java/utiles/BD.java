@@ -20,7 +20,7 @@ public class BD {
      */
     public static Connection conectar() throws SQLException {
         DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/mensajeria", "mensajeria", "mensajeria");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/empresa", "empresa", "empresa");
         return conn;
     }
 

@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="true" %>
+
 <!DOCTYPE html>
 <html>
     <!-- Cabecera -->
@@ -18,7 +19,9 @@
         <c:choose>
             <c:when test="${sessionScope.user == null}">
                 <div class="container">
-                    <jsp:include page="bloques/formularioInicioSesion.jsp"></jsp:include>
+                    <jsp:include page="bloques/formularioInicioSesion.jsp">
+                        <jsp:param name="error" value="${param.error}"></jsp:param>
+                    </jsp:include>
                 </div>
             </c:when>
             <c:otherwise>
