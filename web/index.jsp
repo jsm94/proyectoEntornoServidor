@@ -17,7 +17,7 @@
         <!-- Barra de navegación -->
         <jsp:include page="bloques/navbar.jsp"></jsp:include>
         <c:choose>
-            <c:when test="${sessionScope.user == null}">
+            <c:when test="${empleado == null}">
                 <div class="container">
                     <jsp:include page="bloques/formularioInicioSesion.jsp">
                         <jsp:param name="error" value="${param.error}"></jsp:param>

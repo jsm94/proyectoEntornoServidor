@@ -23,9 +23,9 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <c:if test="${sessionScope.user != null}">
+            <c:if test="${empleado != null}">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#about"><c:out value="${sessionScope.user.nick}"></c:out></a></li>
+                    <li><a href="#about"><c:out value="@${empleado.nick}"></c:out></a></li>
                 </ul>
             </c:if>
         </div><!--.nav-collapse -->
