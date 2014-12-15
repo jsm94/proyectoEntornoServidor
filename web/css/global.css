@@ -26,3 +26,7 @@ body {
   height: 60px;
   background-color: #f5f5f5;
 }
+
+.navbar {
+    border-radius: 0
+}
