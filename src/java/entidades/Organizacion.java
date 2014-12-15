@@ -2,12 +2,13 @@
  * Organizacion
  * Contiene los datos de la organizacion
  */
-package utiles;
+package entidades;
 
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utiles.BD;
 
 /**
  *
