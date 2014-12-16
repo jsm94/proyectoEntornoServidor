@@ -4,7 +4,7 @@
     Author     : Sammy Guergachi <sguergachi at gmail.com>
 --%>
 
-<%@page import="utiles.Mensaje"%>
+<%@page import="entidades.Mensaje"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="error.jsp" %>
 <%
