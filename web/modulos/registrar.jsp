@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : 15-dic-2014, 10:14:50
+    Document   : registrar
+    Created on : 16-dic-2014, 18:37:56
     Author     : Juan Antonio Seco Merchán
 --%>
 
@@ -11,11 +11,12 @@
 <jsp:setProperty name="empleado" property="nick"/>
 <jsp:setProperty name="empleado" property="autenticacion" param="password"/>
 <c:choose>
-    <c:when test="${empleado.validado}">
-        <c:redirect url="../index.jsp"></c:redirect>
+    <c:when test="${!empleado.validado}">
+        <jsp:setProperty name="empleado" property="guardar"/>
+        <c:redirect url="login.jsp"></c:redirect>
     </c:when>
     <c:otherwise>
         <c:remove var="empleado" scope="session"></c:remove>
-        <c:redirect url="../index.jsp?error=true"></c:redirect>
+        <c:redirect url="registro.jsp?error=true"></c:redirect>
     </c:otherwise>
 </c:choose>

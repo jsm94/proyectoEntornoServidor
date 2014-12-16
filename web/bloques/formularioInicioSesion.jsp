@@ -18,7 +18,7 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="Introduce tu contraseña">
         </div>
         <button type="submit" class="btn btn-primary">Entrar</button>
-        <span><a>Regístrate</a></span>
+        <span><a class="btn btn-link" href="modulos/registro.jsp">Regístrate</a></span>
         <c:if test="${param.error}">
             <p class="text-danger text-right">El usuario no existe o la contraseña es incorrecta</p>
         </c:if>

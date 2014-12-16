@@ -26,6 +26,7 @@
             <c:if test="${empleado != null}">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#about"><c:out value="@${empleado.nick}"></c:out></a></li>
+                    <li><form action="modulos/logout.jsp" style="margin-top: 10px;"><button class="btn btn-danger btn-sm">Cerrar sesión</button></form></li>
                 </ul>
             </c:if>
         </div><!--.nav-collapse -->

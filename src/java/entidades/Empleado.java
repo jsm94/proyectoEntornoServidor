@@ -148,7 +148,7 @@ public class Empleado {
         Connection con = null;
         try {
             con = utiles.BD.conectar();
-            PreparedStatement autenticacion = con.prepareStatement("select * from empleados where nick=?");
+            PreparedStatement autenticacion = con.prepareStatement("SELECT * FROM empleados JOIN departamentos ON departamento = departamentos.id WHERE nick=?");
             autenticacion.setString(1, nick);
             ResultSet resultado = autenticacion.executeQuery();
             if (resultado.next()) {
@@ -157,7 +157,7 @@ public class Empleado {
                     this.nick = nick;
                     nombre = resultado.getString("nombre");
                     apellidos = resultado.getString("apellidos");
-                    departamento = resultado.getString("departamento");
+                    departamento = resultado.getString("departamentos.nombre");
                     autenticado = true;
                 }
             }
