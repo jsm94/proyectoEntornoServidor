@@ -8,7 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 
 <div class="col-md-6 col-md-offset-3">
-    <form role="form" method="post" action="registrar.jsp">
+    <form role="form" method="post" action="registrar.jsp" accept-charset="iso-8859-1">
         <h2 class="text-center">Regístrate</h2>
         <div class="form-group<c:if test="${param.error}"> has-error has-feedback</c:if>">
                 <label for="nick">Nombre de usuario <small>(nick)</small></label>

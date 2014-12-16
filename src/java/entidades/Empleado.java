@@ -11,7 +11,6 @@ import java.sql.*;
  *
  * @author Juan Antonio Seco Merchán
  */
-
 public class Empleado {
 
     private Integer id;
@@ -86,17 +85,44 @@ public class Empleado {
      * Establece la propiedad guardar
      *
      * @param guardar si es true, se guardan los datos en la Base de Datos
+     * @param password
      */
-    public void setGuardar(boolean guardar) {
-        if (guardar) {
-            guardar();
+    public void setGuardar(String password) {
+            guardar(password);
+    }
+
+    /**
+     * Inserta el empleado en la BD o actualiza sus datos si ya existe
+     *
+     * @param password
+     */
+    public void guardar(String password) {
+        Connection con = null;
+        try {
+            con = utiles.BD.conectar();
+
+            // El empleado no existe -> insert
+            PreparedStatement insertar = con.prepareStatement(
+                    "insert into empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=?");
+            insertar.setString(1, nick);
+            insertar.setString(2, password);
+            insertar.setString(3, nombre);
+            insertar.setString(4, apellidos);
+            insertar.setString(5, departamento);
+            insertar.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("En Empleado.guardar(): " + e.getMessage());
+        } finally {
+            utiles.BD.desconectar(con);
         }
     }
 
     /**
      * Inserta el empleado en la BD o actualiza sus datos si ya existe
+     *
+     * @param password
      */
-    public void guardar() {
+    public void actualizar(String password) {
         Connection con = null;
         try {
             con = utiles.BD.conectar();
@@ -107,26 +133,16 @@ public class Empleado {
             if (resultado.next()) {
                 // El empleado ya existe -> update
                 PreparedStatement actualizar = con.prepareStatement(
-                        "update empleados set nick=?, nombre=?, apellidos=?, departamento=? where id=?");
+                        "update empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=? where id=?");
                 actualizar.setString(1, nick);
-                actualizar.setString(2, nombre);
-                actualizar.setString(3, apellidos);
-                actualizar.setString(4, departamento);
-                actualizar.setInt(5, id);
+                actualizar.setString(2, password);
+                actualizar.setString(3, nombre);
+                actualizar.setString(4, apellidos);
+                actualizar.setString(5, departamento);
                 actualizar.executeUpdate();
-            } else {
-                // El empleado no existe -> insert
-                PreparedStatement insertar = con.prepareStatement(
-                        "insert into empleados set nick=?, nombre=?, apellidos=?, departamento=?, id=?");
-                insertar.setString(1, nick);
-                insertar.setString(2, nombre);
-                insertar.setString(3, apellidos);
-                insertar.setString(4, departamento);
-                insertar.setInt(5, id);
-                insertar.executeUpdate();
             }
         } catch (SQLException e) {
-            System.out.println("En Empleado.guardar(): " + e.getMessage());
+            System.out.println("En Empleado.actualizar(): " + e.getMessage());
         } finally {
             utiles.BD.desconectar(con);
         }
