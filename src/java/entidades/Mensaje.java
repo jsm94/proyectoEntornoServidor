@@ -6,6 +6,7 @@
 package entidades;
 
 import java.sql.*;
+import java.util.List;
 
 /**
  *
@@ -23,6 +24,17 @@ public class Mensaje {
     private String ip;
     private java.util.Date fechaYHora;
 
+    public Mensaje(int id, String nombre, String apellidos, String ocupacion, String email, int empleado, String mensaje, String ip, java.util.Date fechaYHora) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.ocupacion = ocupacion;
+        this.email = email;
+        this.empleado = empleado;
+        this.mensaje = mensaje;
+        this.ip = ip;
+        this.fechaYHora = fechaYHora;
+    }
     
     public void setId(int id) {
         this.id = id;

@@ -6,6 +6,7 @@
 package entidades;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,7 +19,9 @@ public class Empleado {
     private String apellidos;
     private String departamento;
     private String nick;
+    private Integer admin;
     private boolean validado = false;
+    private ArrayList<Mensaje> mensajes = null;
 
     // <editor-fold defaultstate="collapsed" desc="getter & setter">
     public void setId(Integer id) {
@@ -60,6 +63,24 @@ public class Empleado {
     public String getNick() {
         return nick;
     }
+
+    public Integer getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Integer admin) {
+        this.admin = admin;
+    }
+
+    public ArrayList<Mensaje> getMensajes() {
+        return mensajes;
+    }
+
+    public void setMensajes(ArrayList<Mensaje> mensajes) {
+        this.mensajes = mensajes;
+    }
+    
+    
     // </editor-fold>
 
     /**
@@ -72,6 +93,12 @@ public class Empleado {
         validado = autenticar(nick, password);
     }
 
+    public void setMessages(boolean si) {
+        if(si){
+            setMensajes(mensajes());
+        }
+    }
+    
     /**
      * Consulta la propiedad validado (sólo lectura)
      *
@@ -84,11 +111,14 @@ public class Empleado {
     /**
      * Establece la propiedad guardar
      *
-     * @param guardar si es true, se guardan los datos en la Base de Datos
      * @param password
      */
     public void setGuardar(String password) {
             guardar(password);
+    }
+    
+    public void setActualizar(String password) {
+            actualizar(password);
     }
 
     /**
@@ -103,12 +133,13 @@ public class Empleado {
 
             // El empleado no existe -> insert
             PreparedStatement insertar = con.prepareStatement(
-                    "insert into empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=?");
+                    "insert into empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=?, admin=?");
             insertar.setString(1, nick);
             insertar.setString(2, password);
             insertar.setString(3, nombre);
             insertar.setString(4, apellidos);
             insertar.setString(5, departamento);
+            insertar.setInt(6, admin);
             insertar.executeUpdate();
         } catch (SQLException e) {
             System.out.println("En Empleado.guardar(): " + e.getMessage());
@@ -133,12 +164,14 @@ public class Empleado {
             if (resultado.next()) {
                 // El empleado ya existe -> update
                 PreparedStatement actualizar = con.prepareStatement(
-                        "update empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=? where id=?");
+                        "update empleados set nick=?, password=?, nombre=?, apellidos=?, departamento=?, admin=? where id=?");
                 actualizar.setString(1, nick);
                 actualizar.setString(2, password);
                 actualizar.setString(3, nombre);
                 actualizar.setString(4, apellidos);
                 actualizar.setString(5, departamento);
+                actualizar.setInt(6, admin);
+                actualizar.setInt(7, id);
                 actualizar.executeUpdate();
             }
         } catch (SQLException e) {
@@ -174,6 +207,7 @@ public class Empleado {
                     nombre = resultado.getString("nombre");
                     apellidos = resultado.getString("apellidos");
                     departamento = resultado.getString("departamentos.nombre");
+                    admin = resultado.getInt("admin");
                     autenticado = true;
                 }
             }
@@ -184,5 +218,39 @@ public class Empleado {
         }
 
         return autenticado;
+    }
+    
+    public ArrayList<Mensaje> mensajes() {
+        this.mensajes = new ArrayList<Mensaje>();
+        Connection conexion = null;
+        try {
+            conexion = utiles.BD.conectar();
+            
+            PreparedStatement sql = conexion.prepareStatement(
+                    "select * from mensajes where empleado=? order by id desc");
+            sql.setInt(1, id);
+            ResultSet rs = sql.executeQuery();
+            while(rs.next()) {
+                Mensaje mensaje = new Mensaje(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("ocupacion"),
+                        rs.getString("email"),
+                        rs.getInt("empleado"),
+                        rs.getString("mensaje"),
+                        rs.getString("ip"),
+                        rs.getTimestamp("fechaYHora")
+                );
+                this.mensajes.add(mensaje);
+                System.out.println("Añadido");
+            }
+        } catch (SQLException e) {
+            System.out.println("En mensaje.guardar(): " + e.getMessage());
+        } finally {
+            utiles.BD.desconectar(conexion);            
+        }
+        
+        return mensajes;
     }
 }

@@ -19,13 +19,13 @@
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Inicio</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="active"><a href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/index.jsp">Inicio</a></li>
+                <c:if test="${empleado.admin == 1}"><li><a href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/verEmpleados.jsp">Empleados</a></li></c:if>
+                <li><a href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/contacto.jsp">Contacto</a></li>
             </ul>
             <c:if test="${empleado != null}">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#about"><c:out value="@${empleado.nick}"></c:out></a></li>
+                    <li><a href="#"><c:out value="@${empleado.nick}"></c:out></a></li>
                     <li><form action="modulos/logout.jsp" style="margin-top: 10px;"><button class="btn btn-danger btn-sm">Cerrar sesión</button></form></li>
                 </ul>
             </c:if>

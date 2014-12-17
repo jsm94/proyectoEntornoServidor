@@ -31,3 +31,9 @@ body {
 .navbar {
     border-radius: 0
 }
+
+/* Paneles */
+.panelMensajes {
+    max-height: 720px;
+    overflow: scroll;
+}
